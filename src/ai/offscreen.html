@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Consent Pilot AI Engine</title></head>
+<body>
+<!--
+  Offscreen document for running Transformers.js inference.
+  Managed by the service worker. Invisible to the user.
+
+  Transformers.js is loaded from CDN on first use, then the browser
+  caches it. The AI model (~200MB) is downloaded from Hugging Face
+  on first use and cached in IndexedDB permanently.
+-->
+<script type="module" src="offscreen.js"></script>
+</body>
+</html>

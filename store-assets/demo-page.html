@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Example News Site — Consent Pilot Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f5f5f0;
+    color: #333;
+  }
+
+  /* Fake news site */
+  .site-header {
+    background: #1a1a2e;
+    color: white;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .site-header h1 { font-size: 22px; letter-spacing: -0.5px; }
+  .site-header nav { display: flex; gap: 24px; font-family: system-ui; font-size: 13px; color: #aaa; }
+  .site-header nav a { color: #ccc; text-decoration: none; }
+
+  .site-content {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .article h2 {
+    font-size: 36px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: #1a1a2e;
+  }
+  .article .meta {
+    font-family: system-ui;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+  }
+  .article .hero-img {
+    width: 100%;
+    height: 380px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: system-ui;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  .article p {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: #444;
+  }
+
+  /* Fake blurred overlay when banner is shown */
+  .page-dimmer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 9998;
+    backdrop-filter: blur(1px);
+    transition: opacity 0.5s;
+  }
+  .page-dimmer.hidden { opacity: 0; pointer-events: none; }
+
+  /* Realistic cookie banner */
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    padding: 28px 40px;
+    font-family: system-ui, -apple-system, sans-serif;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+  .cookie-banner.dismissed {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .cookie-banner h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+  }
+  .cookie-banner p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+  .cookie-banner .btn-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .cookie-banner .btn {
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .cookie-banner .btn-accept {
+    background: #1a73e8;
+    color: white;
+    font-size: 15px;
+    padding: 14px 36px;
+  }
+  .cookie-banner .btn-accept:hover { background: #1557b0; }
+
+  /* Dark pattern: reject button is smaller, less prominent */
+  .cookie-banner .btn-reject {
+    background: none;
+    color: #999;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+  }
+  .cookie-banner .btn-manage {
+    background: none;
+    color: #999;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 8px 16px;
+  }
+
+  .cookie-banner .categories {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .cookie-banner .category {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+  }
+  .cookie-banner .category input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #1a73e8;
+  }
+  .cookie-banner .category.required {
+    color: #999;
+  }
+
+  /* Annotation callouts for screenshots */
+  .callout {
+    position: fixed;
+    z-index: 10000;
+    background: #e94560;
+    color: white;
+    font-family: system-ui;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+    display: none;
+    white-space: nowrap;
+  }
+  .callout::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .callout-reject {
+    bottom: 108px;
+    right: 200px;
+  }
+  .callout-reject::after {
+    bottom: -8px;
+    right: 30px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #e94560;
+  }
+  .callout-darkpattern {
+    bottom: 118px;
+    left: 320px;
+  }
+  .callout-darkpattern::after {
+    bottom: -8px;
+    left: 80px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #e94560;
+  }
+
+  /* Controls for screenshot mode */
+  .screenshot-controls {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10001;
+    display: flex;
+    gap: 8px;
+    font-family: system-ui;
+  }
+  .screenshot-controls button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .sc-before { background: #e94560; color: white; }
+  .sc-after { background: #4ecca3; color: #1a1a2e; }
+  .sc-annotate { background: #f0a500; color: #1a1a2e; }
+  .sc-hide { background: #333; color: white; }
+</style>
+</head>
+<body>
+
+<!-- Fake news site content -->
+<header class="site-header">
+  <h1>The Daily European</h1>
+  <nav>
+    <a href="#">News</a>
+    <a href="#">Technology</a>
+    <a href="#">Privacy</a>
+    <a href="#">Opinion</a>
+    <a href="#">Sport</a>
+  </nav>
+</header>
+
+<main class="site-content">
+  <article class="article">
+    <h2>EU Privacy Regulators Report Record Number of Cookie Consent Violations in 2026</h2>
+    <div class="meta">February 13, 2026 &middot; 4 min read &middot; By Sarah Mitchell</div>
+    <div class="hero-img">[ Article Image ]</div>
+    <p>European data protection authorities have collectively issued a record number of enforcement actions related to cookie consent mechanisms, with dark patterns in consent banners being the primary focus of regulatory scrutiny this year.</p>
+    <p>The trend highlights growing frustration among regulators with websites that make rejecting cookies deliberately difficult — hiding reject buttons, using confusing language, or requiring multiple clicks to opt out while offering a single prominent "Accept All" button.</p>
+    <p>"Users should be able to reject non-essential cookies as easily as they can accept them," said the European Data Protection Board in a statement released alongside the enforcement figures. "Any implementation that makes rejection harder than acceptance is a clear violation of GDPR principles."</p>
+  </article>
+</main>
+
+<!-- Page dimmer overlay -->
+<div class="page-dimmer" id="dimmer"></div>
+
+<!-- Realistic cookie consent banner -->
+<div class="cookie-banner" id="cookieBanner">
+  <h3>We value your privacy</h3>
+  <p>We and our 847 partners use cookies and similar technologies to store and access information on your device for personalized advertising, content measurement, audience insights, and product development. Click "Accept All" to consent or manage your preferences below.</p>
+  <div class="categories">
+    <label class="category required">
+      <input type="checkbox" checked disabled> Strictly Necessary
+    </label>
+    <label class="category">
+      <input type="checkbox" checked> Analytics
+    </label>
+    <label class="category">
+      <input type="checkbox" checked> Marketing
+    </label>
+    <label class="category">
+      <input type="checkbox" checked> Personalization
+    </label>
+    <label class="category">
+      <input type="checkbox" checked> Social Media
+    </label>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-accept">Accept All Cookies</button>
+    <button class="btn btn-manage">Manage Preferences</button>
+    <button class="btn btn-reject" id="rejectBtn">Reject Non-Essential</button>
+  </div>
+</div>
+
+<!-- Annotation callouts -->
+<div class="callout callout-darkpattern" id="calloutDark">
+  Dark pattern: "Accept" is 3x bigger than "Reject"
+</div>
+<div class="callout callout-reject" id="calloutReject">
+  Consent Pilot clicks this automatically
+</div>
+
+<!-- Screenshot mode controls -->
+<div class="screenshot-controls" id="controls">
+  <button class="sc-before" onclick="showBefore()">Before</button>
+  <button class="sc-after" onclick="showAfter()">After</button>
+  <button class="sc-annotate" onclick="showAnnotated()">Annotated</button>
+  <button class="sc-hide" onclick="hideControls()">Hide Controls</button>
+</div>
+
+<script>
+  const banner = document.getElementById('cookieBanner');
+  const dimmer = document.getElementById('dimmer');
+  const calloutDark = document.getElementById('calloutDark');
+  const calloutReject = document.getElementById('calloutReject');
+  const controls = document.getElementById('controls');
+
+  function showBefore() {
+    banner.classList.remove('dismissed');
+    dimmer.classList.remove('hidden');
+    calloutDark.style.display = 'none';
+    calloutReject.style.display = 'none';
+  }
+
+  function showAfter() {
+    banner.classList.add('dismissed');
+    dimmer.classList.add('hidden');
+    calloutDark.style.display = 'none';
+    calloutReject.style.display = 'none';
+  }
+
+  function showAnnotated() {
+    banner.classList.remove('dismissed');
+    dimmer.classList.remove('hidden');
+    calloutDark.style.display = 'block';
+    calloutReject.style.display = 'block';
+  }
+
+  function hideControls() {
+    controls.style.display = 'none';
+    // Press Escape to bring them back
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') controls.style.display = 'flex';
+    if (e.key === '1') showBefore();
+    if (e.key === '2') showAfter();
+    if (e.key === '3') showAnnotated();
+  });
+</script>
+</body>
+</html>

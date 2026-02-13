@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consent Pilot — Privacy Policy</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #333; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 18px; margin-top: 30px; }
+  p, li { font-size: 15px; }
+</style>
+</head>
+<body>
+<h1>Consent Pilot — Privacy Policy</h1>
+<p><em>Last updated: February 2026</em></p>
+
+<h2>Summary</h2>
+<p>Consent Pilot does not collect, store, or transmit any personal data. Everything happens locally in your browser.</p>
+
+<h2>What data does Consent Pilot access?</h2>
+<ul>
+  <li><strong>Page content (DOM):</strong> The extension reads the HTML structure of cookie consent banners on the websites you visit. This is necessary to detect and interact with cookie banners. This data is processed locally and never sent anywhere.</li>
+  <li><strong>Local storage:</strong> The extension stores your preferences (enabled/disabled, whitelisted sites) and anonymous statistics (number of banners handled) in Chrome's local storage on your device.</li>
+</ul>
+
+<h2>What data does Consent Pilot NOT access?</h2>
+<ul>
+  <li>No browsing history</li>
+  <li>No personal information</li>
+  <li>No cookies (the extension rejects cookies — it does not read your existing ones)</li>
+  <li>No form data, passwords, or keystrokes</li>
+</ul>
+
+<h2>Does Consent Pilot send data to external servers?</h2>
+<p><strong>No.</strong> All processing happens locally in your browser. The only network requests the extension makes are:</p>
+<ul>
+  <li><strong>AI model download (optional):</strong> If the local AI fallback is activated, a machine learning model (~200MB) is downloaded once from Hugging Face (huggingface.co) and cached locally. No page content or personal data is sent during this download.</li>
+</ul>
+
+<h2>Permissions explained</h2>
+<ul>
+  <li><strong>storage:</strong> To save your settings and statistics locally</li>
+  <li><strong>activeTab:</strong> To detect and interact with cookie banners on the current page</li>
+  <li><strong>scripting:</strong> To inject the banner detection scripts into web pages</li>
+  <li><strong>host_permissions (&lt;all_urls&gt;):</strong> Cookie banners can appear on any website, so the extension needs to run on all URLs</li>
+  <li><strong>offscreen:</strong> To run the optional AI model in a background document</li>
+</ul>
+
+<h2>Third-party services</h2>
+<p>The optional AI feature uses:</p>
+<ul>
+  <li><strong>Hugging Face Hub:</strong> To download the open-source SmolLM2-360M model. Subject to <a href="https://huggingface.co/privacy">Hugging Face's privacy policy</a>. Only the model files are downloaded — no user data is sent.</li>
+  <li><strong>Transformers.js:</strong> An open-source library by Hugging Face that runs AI models locally in the browser. It does not transmit any data.</li>
+</ul>
+
+<h2>Changes to this policy</h2>
+<p>If we make changes, the updated policy will be published here. The extension itself will never collect personal data.</p>
+
+<h2>Contact</h2>
+<p>Questions? Open an issue on our GitHub repository.</p>
+</body>
+</html>

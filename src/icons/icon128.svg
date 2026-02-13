@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="shieldGrad128" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ecca3"/>
+      <stop offset="100%" stop-color="#38b48b"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Shield body -->
+  <path d="M64 8L16 28v32c0 28 20.5 49.6 48 60 27.5-10.4 48-32 48-60V28L64 8z" fill="url(#shieldGrad128)" stroke="#4ecca3" stroke-width="3"/>
+  <!-- Inner shield highlight -->
+  <path d="M64 16L24 33v25c0 24 17.5 42.6 40 52 22.5-9.4 40-28 40-52V33L64 16z" fill="none" stroke="#4ecca3" stroke-width="0.5" opacity="0.2"/>
+  <!-- Cookie shape (subtle, behind the checkmark) -->
+  <circle cx="64" cy="58" r="24" fill="none" stroke="#4ecca3" stroke-width="2" opacity="0.25"/>
+  <!-- Cookie chip details -->
+  <circle cx="55" cy="50" r="3" fill="#4ecca3" opacity="0.2"/>
+  <circle cx="70" cy="54" r="2.5" fill="#4ecca3" opacity="0.2"/>
+  <circle cx="58" cy="66" r="2.8" fill="#4ecca3" opacity="0.2"/>
+  <circle cx="72" cy="65" r="2" fill="#4ecca3" opacity="0.2"/>
+  <circle cx="62" cy="56" r="1.8" fill="#4ecca3" opacity="0.15"/>
+  <!-- Diagonal reject line through cookie -->
+  <line x1="47" y1="42" x2="81" y2="74" stroke="#e94560" stroke-width="2.5" opacity="0.35" stroke-linecap="round"/>
+  <!-- Main checkmark -->
+  <path d="M42 60l15 15L88 40" fill="none" stroke="url(#checkGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <!-- "PILOT" subtle text at bottom -->
+  <text x="64" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#4ecca3" opacity="0.5" letter-spacing="3">CONSENT PILOT</text>
+</svg>

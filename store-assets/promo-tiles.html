@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; }
+
+  .tile {
+    position: relative;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Small promo tile 440x280 */
+  .tile-small {
+    width: 440px;
+    height: 280px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+
+  /* Marquee tile 1400x560 */
+  .tile-marquee {
+    width: 1400px;
+    height: 560px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  }
+
+  /* Shared decorative elements */
+  .tile .bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+    background: #4ecca3;
+  }
+
+  /* Small tile layout */
+  .tile-small .bg-circle-1 { width: 300px; height: 300px; top: -100px; right: -80px; }
+  .tile-small .bg-circle-2 { width: 200px; height: 200px; bottom: -80px; left: -60px; }
+
+  .tile-small .content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+  }
+
+  .tile-small .shield {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+  }
+
+  .tile-small .title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .tile-small .subtitle {
+    font-size: 14px;
+    color: #4ecca3;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* Marquee tile layout */
+  .tile-marquee .bg-circle-1 { width: 600px; height: 600px; top: -200px; right: -100px; }
+  .tile-marquee .bg-circle-2 { width: 400px; height: 400px; bottom: -150px; left: -100px; }
+  .tile-marquee .bg-circle-3 { width: 250px; height: 250px; top: 50%; left: 45%; opacity: 0.04; }
+
+  .tile-marquee .content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 80px;
+    gap: 60px;
+  }
+
+  .tile-marquee .left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tile-marquee .shield {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 4px;
+  }
+
+  .tile-marquee .title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .tile-marquee .subtitle {
+    font-size: 18px;
+    color: #4ecca3;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .tile-marquee .tagline {
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    max-width: 420px;
+  }
+
+  .tile-marquee .right {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* Mini banner mockup in marquee */
+  .mini-banner {
+    width: 460px;
+    background: white;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    font-family: system-ui, sans-serif;
+    position: relative;
+  }
+
+  .mini-banner h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 6px;
+  }
+
+  .mini-banner p {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .mini-banner .btns {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .mini-banner .btn-accept {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+  }
+
+  .mini-banner .btn-reject {
+    background: none;
+    border: 1px solid #ddd;
+    color: #999;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-family: inherit;
+  }
+
+  /* Strikethrough overlay on accept button */
+  .mini-banner .btn-accept {
+    position: relative;
+    opacity: 0.5;
+  }
+  .mini-banner .btn-accept::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -4px;
+    right: -4px;
+    height: 2px;
+    background: #e94560;
+    transform: rotate(-5deg);
+  }
+
+  /* Reject highlighted */
+  .mini-banner .btn-reject {
+    border-color: #4ecca3;
+    color: #4ecca3;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 8px 16px;
+    box-shadow: 0 0 0 2px rgba(78, 204, 163, 0.3);
+  }
+
+  /* Checkmark badge */
+  .mini-banner .badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 36px;
+    height: 36px;
+    background: #4ecca3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(78, 204, 163, 0.4);
+  }
+
+  /* Features list in marquee */
+  .features {
+    display: flex;
+    gap: 24px;
+    margin-top: 8px;
+  }
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+  .feature .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ecca3;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- Small Promo Tile 440x280 -->
+<div class="tile tile-small" id="tileSmall">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="content">
+    <svg class="shield" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 5L15 20v30c0 22.5 15 42.5 35 47.5 20-5 35-25 35-47.5V20L50 5z" fill="#4ecca3" fill-opacity="0.15" stroke="#4ecca3" stroke-width="3"/>
+      <path d="M38 50l10 10 18-20" stroke="#4ecca3" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="title">Consent Pilot</div>
+    <div class="subtitle">Auto-reject cookies. Browse in peace.</div>
+  </div>
+</div>
+
+<div style="height: 40px;"></div>
+
+<!-- Marquee Promo Tile 1400x560 -->
+<div class="tile tile-marquee" id="tileMarquee">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="content">
+    <div class="left">
+      <svg class="shield" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5L15 20v30c0 22.5 15 42.5 35 47.5 20-5 35-25 35-47.5V20L50 5z" fill="#4ecca3" fill-opacity="0.15" stroke="#4ecca3" stroke-width="3"/>
+        <path d="M38 50l10 10 18-20" stroke="#4ecca3" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="title">Stop blindly<br>accepting cookies.</div>
+      <div class="subtitle">Consent Pilot rejects them for you.</div>
+      <div class="tagline">Automatically clicks "Reject All" on every GDPR cookie banner. Supports 10+ cookie platforms, 8 languages, with optional on-device AI.</div>
+      <div class="features">
+        <div class="feature"><span class="dot"></span> No tracking</div>
+        <div class="feature"><span class="dot"></span> Open source</div>
+        <div class="feature"><span class="dot"></span> 100% local</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="mini-banner">
+        <div class="badge">&#10003;</div>
+        <h4>We value your privacy</h4>
+        <p>We and our 847 partners use cookies to store information on your device for personalized ads, content measurement, and audience insights.</p>
+        <div class="btns">
+          <button class="btn-accept">Accept All Cookies</button>
+          <button class="btn-reject">Reject All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

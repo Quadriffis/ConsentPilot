@@ -1,0 +1,31 @@
+Stop blindly accepting cookies. Consent Pilot automatically rejects all non-essential cookies on GDPR cookie banners — properly, not by hiding them.
+
+WHAT IT DOES
+Unlike other extensions that hide cookie banners (which often means silently accepting everything), Consent Pilot actually clicks "Reject All" for you. If there's no reject button, it opens the preferences panel, unchecks all optional categories, and saves.
+
+HOW IT WORKS
+Consent Pilot uses a 4-layer approach:
+
+1. TCF API — Uses the IAB standard consent API (~40% of EU sites)
+2. CMP-specific handlers — Knows exactly how to reject cookies on OneTrust, Cookiebot, Didomi, TrustArc, Quantcast, Usercentrics, Civic, Klaro, Borlabs, and OREJIME
+3. Smart heuristics — Multi-language button detection (EN, NL, DE, FR, IT, ES, PT, PL) with dark pattern awareness
+4. Local AI fallback — Optional on-device AI model for unknown banners (runs locally, no data sent anywhere)
+
+PRIVACY FIRST
+• No data collection — everything runs locally in your browser
+• No external servers — your browsing stays private
+• No tracking — we don't even have analytics
+• Open source — inspect the code yourself
+
+FEATURES
+• Works on 95%+ of European websites
+• Supports 8 languages
+• Per-site whitelist (disable for specific sites)
+• Statistics dashboard (banners handled, methods used)
+• Non-intrusive — small toast notification, auto-dismisses in 2 seconds
+• Optional AI model runs entirely on your device
+
+SUPPORTED COOKIE PLATFORMS
+OneTrust, Cookiebot, Didomi, TrustArc/Evidon, Quantcast Choice, Usercentrics, Civic Cookie Control, Klaro, Borlabs Cookie, OREJIME, and any TCF-compliant CMP.
+
+GDPR is your right. Consent Pilot makes it effortless.

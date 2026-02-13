@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+  <title>Consent Pilot</title>
+</head>
+<body>
+  <div class="popup">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-brand">
+        <img src="../icons/icon48.svg" alt="Consent Pilot" class="header-icon" width="28" height="28">
+        <div>
+          <h1 class="header-title">Consent Pilot</h1>
+          <span class="header-subtitle">Cookie consent, automated</span>
+        </div>
+      </div>
+      <label class="toggle" title="Global enable/disable">
+        <input type="checkbox" id="globalToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </header>
+
+    <!-- Site Status Card -->
+    <section class="card site-status" id="siteStatusCard">
+      <div class="card-header">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="card-label" id="siteDomain">Loading...</span>
+      </div>
+      <p class="status-message" id="statusMessage">Checking status...</p>
+      <p class="status-timestamp" id="statusTimestamp"></p>
+    </section>
+
+    <!-- Site Toggle Card -->
+    <section class="card site-toggle-card">
+      <div class="card-row">
+        <div>
+          <span class="card-label">Enabled for this site</span>
+          <span class="card-hint" id="whitelistHint">Toggle off to whitelist</span>
+        </div>
+        <label class="toggle toggle-sm">
+          <input type="checkbox" id="siteToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Stats Card -->
+    <section class="card stats-card">
+      <div class="stats-header">
+        <span class="card-label">Statistics</span>
+        <div class="stats-period-toggle">
+          <button class="period-btn active" data-period="allTime">All time</button>
+          <button class="period-btn" data-period="month">This month</button>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-number" id="statBanners">0</span>
+          <span class="stat-label">Banners handled</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="statRejected">0</span>
+          <span class="stat-label">Cookies rejected</span>
+        </div>
+      </div>
+      <div class="stats-breakdown" id="statsBreakdown">
+        <div class="breakdown-bar">
+          <div class="bar-segment bar-tcf" id="barTcf" title="TCF API"></div>
+          <div class="bar-segment bar-cmp" id="barCmp" title="CMP-specific"></div>
+          <div class="bar-segment bar-heuristic" id="barHeuristic" title="Heuristic"></div>
+          <div class="bar-segment bar-ai" id="barAi" title="AI fallback"></div>
+        </div>
+        <div class="breakdown-legend">
+          <span class="legend-item"><span class="legend-dot dot-tcf"></span>TCF</span>
+          <span class="legend-item"><span class="legend-dot dot-cmp"></span>CMP</span>
+          <span class="legend-item"><span class="legend-dot dot-heuristic"></span>Heuristic</span>
+          <span class="legend-item"><span class="legend-dot dot-ai"></span>AI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Model Card -->
+    <section class="card ai-card" id="aiCard">
+      <div class="card-row">
+        <div>
+          <span class="card-label">Local AI Model</span>
+          <span class="card-hint" id="aiStatus">Checking...</span>
+        </div>
+        <button class="btn-sm btn-accent" id="aiActionBtn">Load</button>
+      </div>
+      <div class="ai-progress-wrap" id="aiProgressWrap" hidden>
+        <div class="ai-progress-bar">
+          <div class="ai-progress-fill" id="aiProgressFill"></div>
+        </div>
+        <span class="ai-progress-text" id="aiProgressText">0%</span>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="actions">
+      <button class="btn btn-secondary" id="reportBtn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="7" cy="7" r="6"/>
+          <line x1="7" y1="4" x2="7" y2="7.5"/>
+          <circle cx="7" cy="9.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+        Report missed banner
+      </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>v<span id="versionNumber">0.1.0</span></span>
+      <a href="#" id="settingsLink" class="footer-link">Settings</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Consent Pilot",
+  "version": "1.0.0",
+  "description": "Automatically reject all non-essential cookies on GDPR cookie banners. No tracking, no dark patterns — just privacy.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "src/content/detector.js",
+        "src/content/tcf-handler.js",
+        "src/content/cmp-handlers.js",
+        "src/content/heuristic-handler.js",
+        "src/content/main.js"
+      ],
+      "css": ["src/content/overlay.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "src/icons/icon16.png",
+      "48": "src/icons/icon48.png",
+      "128": "src/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
+  }
+}
